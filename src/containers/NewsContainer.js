@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import NewsList from '../components/NewsList.js'
 import NewsFilter from '../components/NewsFilter';
+import './NewsContainer.css';
 
 class NewsContainer extends Component{
 
@@ -32,19 +33,17 @@ class NewsContainer extends Component{
 
     handleTypingArticle(characters){
         const updatedStories = [...this.state.stories];
-        console.log(updatedStories);
-        console.log(characters)
         const newStories = updatedStories.filter(story => 
-            story.title.toLowerCase().includes(characters));
+            story.title.toLowerCase().includes(characters.toLowerCase()));
         this.setState({stories: newStories})
     }
 
     render(){
         return (
-            <div>
+            <div className="news-container">
                 <h2>Hacker News</h2>
-                <NewsList stories={this.state.stories}/>
                 <NewsFilter onHandleTyping={this.handleTypingArticle}></NewsFilter>
+                <NewsList stories={this.state.stories}/>
             </div>
         )
     }
