@@ -3,6 +3,10 @@ import NewsArticle from './NewsArticle';
 
 const NewsList = ({stories}) => {
 
+    if(stories == null || stories.length === 0){
+        return <p>Hold your horses mate...</p>
+    }
+
     const newsEntry = stories.map((story, index) => {
         return (
             <NewsArticle score={story.score} title={story.title} by={story.by} link={story.link} 

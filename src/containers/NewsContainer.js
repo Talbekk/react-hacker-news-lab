@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import NewsList from '../components/NewsList.js'
+import NewsFilter from '../components/NewsFilter';
 
 class NewsContainer extends Component{
 
@@ -8,6 +9,8 @@ class NewsContainer extends Component{
         this.state = {
             stories: []
         }
+
+        this.handleTypingArticle = this.handleTypingArticle.bind(this);
     }
 
     componentDidMount(){
@@ -21,8 +24,19 @@ class NewsContainer extends Component{
             .then(res => res.json())
             .then(console.log(key))
         ))
-        .then(stories => this.setState({stories: stories}))
+        .then(stories => stories.sort(function(a,b){ return b.score-a.score;}))
+        .then(sortedStories => sortedStories.slice(0,20))
+        .then(slicedStories => this.setState({stories: slicedStories}))
        )
+    }
+
+    handleTypingArticle(characters){
+        const updatedStories = [...this.state.stories];
+        console.log(updatedStories);
+        console.log(characters)
+        const newStories = updatedStories.filter(story => 
+            story.title.toLowerCase().includes(characters));
+        this.setState({stories: newStories})
     }
 
     render(){
@@ -30,6 +44,7 @@ class NewsContainer extends Component{
             <div>
                 <h2>Hacker News</h2>
                 <NewsList stories={this.state.stories}/>
+                <NewsFilter onHandleTyping={this.handleTypingArticle}></NewsFilter>
             </div>
         )
     }
